@@ -53,7 +53,7 @@ public class MineraPilaService implements Runnable{
         PilaCoin pilaCoin = PilaCoin.builder()
                 .dataCriacao(new Date(System.currentTimeMillis()))
                 .chaveCriador(chavePublica.getBytes(StandardCharsets.UTF_8))
-                .nomeCriador("João Vitor Oliveira")
+                .nomeCriador("joao vitor")
                 .build();
         int vezes = 0;
 
@@ -74,7 +74,7 @@ public class MineraPilaService implements Runnable{
                 this.requisisaoService.eviarRequisisao("pila-minerado", json);
 
                 System.out.println("=======SUCESSO==========");
-                System.out.println( "Minerei " +vezes + " vezes e encontrei 1 Pila");
+                System.out.println( "Minerei " + vezes + " vezes e encontrei 1 Pila");
                 System.out.println(json);
 
                 vezes = 0;
