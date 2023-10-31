@@ -17,7 +17,6 @@ public class RequisisaoService {
         this.rabbitTemplate.convertAndSend(routingKey, objeto);
     }
 
-    //metodo responsável por receber as mensagens enviadas pelo server do sor
        @RabbitListener(queues = {"joao_vitor"})
       public void recebeMensagem(@Payload Message message) {
           String responseMessage = new String(message.getBody());

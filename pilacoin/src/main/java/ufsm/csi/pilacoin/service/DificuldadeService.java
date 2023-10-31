@@ -15,7 +15,7 @@ public class DificuldadeService {
     public static BigInteger dificuldadeAtual;
     private BigInteger novaDificuldade;
     private boolean verificaDif = true;
-    public static final int numThreads = 100;
+    public static final int numThreads = 4;
 
     public DificuldadeService(MineraPilaService mineraPilaService) {
        this.mineraPilaService = mineraPilaService;

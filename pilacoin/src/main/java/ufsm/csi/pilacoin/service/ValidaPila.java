@@ -46,38 +46,36 @@ public class ValidaPila {
         }
         pilaIgnroe.add(pilaStr);
         if (fim){
-            System.out.println("Pila minerado: "+pilaStr);
+            //System.out.println("Pila dos outros: "+pilaStr);
             ObjectMapper ob = new ObjectMapper();
             PilaCoin pilacoin = ob.readValue(pilaStr, PilaCoin.class);
             if(pilacoin.getNomeCriador().equals("joao vitor")){
-                System.out.println("Ignora é meu");
                 rabbitTemplate.convertAndSend("pila-minerado",pilaStr);//devolve pq n é meu
             } else {
-                System.out.println("Não é meu");
-                System.out.println("========================================================");
-                System.out.println("Validando pila do(a): "+pilacoin.getNomeCriador());
-                
+                //System.out.println("Não é meu");
                 MessageDigest md = MessageDigest.getInstance("SHA-256");
                 BigInteger hash = new BigInteger(md.digest(pilaStr.getBytes(StandardCharsets.UTF_8))).abs();
-                System.out.println("Gerou o hash");
+                //System.out.println("Gerou o hash");
                  while(DificuldadeService.dificuldadeAtual == null){}//garatnir q n vai tentar comparar antes de receber a dificuldade
                  if(hash.compareTo(DificuldadeService.dificuldadeAtual) < 0){
-                     System.out.println("Passou na dificuldade");
+                     System.out.println("Validando pila do(a): "+pilacoin.getNomeCriador());
                     md.reset();//reseta o MessageDigest para usar dnv
                     byte[] hashh = md.digest(pilaStr.getBytes(StandardCharsets.UTF_8));
                     Cipher cipher = Cipher.getInstance("RSA");
+                    privateKey = MineraPilaService.privateKey;
                     cipher.init(Cipher.ENCRYPT_MODE, privateKey);
                     String hashStr = ob.writeValueAsString(hashh);
-                    System.out.println("Passou do chipher");
                     byte[] assinatura = md.digest(hashStr.getBytes(StandardCharsets.UTF_8));//assinatura
                     ValidacaoPila validacaoPila = ValidacaoPila.builder().pilaCoin(pilacoin).
                             assinaturaPilaCoin(cipher.doFinal(assinatura)).//cipher do final pra criptografar
                                     nomeValidador("Joao Vitor").
-                            chavePublicaValidador(MineraPilaService.chavePublica.getBytes(StandardCharsets.UTF_8)).build();
+                            chavePublicaValidador(MineraPilaService.publicKey.toString().getBytes(StandardCharsets.UTF_8)).build();
                     rabbitTemplate.convertAndSend("pila-validado", ob.writeValueAsString(validacaoPila));
+                    String jsonValidado = ob.writeValueAsString(validacaoPila);
+                     System.out.println("Minha Assinatura: "+jsonValidado);
                     System.out.println("Valido!");
                 } else {
-                    System.out.println("Não Validou! :(");
+                    //System.out.println("Não Validou!");
                     rabbitTemplate.convertAndSend("pila-minerado", pilaStr);
                 }
             }
