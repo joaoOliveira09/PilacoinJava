@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
+import ufsm.csi.pilacoin.Chaves;
 import ufsm.csi.pilacoin.model.PilaCoin;
 
 import java.math.BigInteger;
@@ -46,10 +47,15 @@ public class MineraPilaService implements Runnable{
     @SneakyThrows
     public void run() {
         // Gerar chave publica
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-        keyPairGenerator.initialize(1024);
-        publicKey = keyPairGenerator.generateKeyPair().getPublic();
-        privateKey = keyPairGenerator.generateKeyPair().getPrivate();
+        // KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+        // keyPairGenerator.initialize(1024);
+        //publicKey = keyPairGenerator.generateKeyPair().getPublic();
+        //privateKey = keyPairGenerator.generateKeyPair().getPrivate();
+
+        Chaves chaves = new Chaves();
+        publicKey = chaves.getPublicKey();
+        privateKey = chaves.getPrivateKey();
+
         BigInteger hash;
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         String json = "";

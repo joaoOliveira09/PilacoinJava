@@ -15,5 +15,4 @@ public class Bloco {
     private byte[] chaveUsuarioMinerador;
     private List<Transacoes> transacoes;
 
-    //private List<Transaction> transacoes;
 }

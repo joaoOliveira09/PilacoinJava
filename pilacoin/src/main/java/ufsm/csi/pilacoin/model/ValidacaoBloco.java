@@ -11,5 +11,5 @@ public class ValidacaoBloco {
    String nomeValidador;
     byte[] chavePublicaValidador;
     byte[] assinaturaBloco;
-    Block bloco; 
+    Bloco bloco; 
 }

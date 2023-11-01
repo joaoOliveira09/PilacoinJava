@@ -17,6 +17,8 @@ import java.security.PublicKey;
 import javax.crypto.Cipher;
 
 import lombok.SneakyThrows;
+import ufsm.csi.pilacoin.Chaves;
+import ufsm.csi.pilacoin.model.Bloco;
 import ufsm.csi.pilacoin.model.ValidacaoBloco;
 
 public class ValidaBlocoService {
@@ -38,7 +40,7 @@ public class ValidaBlocoService {
 
     @SneakyThrows
     @RabbitListener(queues = {"descobre-bloco"})
-    public void findBlocks(@Payload String blockStr) {
+    public void getBloco(@Payload String blockStr) {
         blocoDescoberto = this.objectReader.readValue(blockStr, Block.class);
         if(!this.minerar) {
             MineraBlocoService mineraBloco = new MineraBlocoService(null);
@@ -50,22 +52,27 @@ public class ValidaBlocoService {
 
     @SneakyThrows
     @RabbitListener(queues = {"bloco-minerado"})
-    public void validateBlock(@Payload String blockStr) {
+    public void ValidaBloco(@Payload String blockStr) {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         BigInteger hash = new BigInteger(md.digest(blockStr.getBytes(StandardCharsets.UTF_8))).abs();
-        Block block = this.objectReader.readValue(blockStr, Block.class);
+        Bloco bloco = this.objectReader.readValue(blockStr, Bloco.class);
 
         while(DificuldadeService.dificuldadeAtual == null){}//garatnir q n vai tentar comparar antes de receber a dificuldade
 
         if(hash.compareTo(DificuldadeService.dificuldadeAtual) < 0) {
             Cipher cipher = Cipher.getInstance("RSA");
-            privateKey = MineraPilaService.privateKey;
-            publicKey = MineraPilaService.publicKey;
+            Chaves chaves = new Chaves();
+             publicKey = chaves.getPublicKey();
+             privateKey = chaves.getPrivateKey();
+
+            // privateKey = MineraBlocoService.privateKey;
+            // publicKey = MineraBlocoService.publicKey;
+
             cipher.init(Cipher.ENCRYPT_MODE, privateKey);
             byte[] hashByteArr = hash.toString().getBytes(StandardCharsets.UTF_8);
             ValidacaoBloco validacaoBloco = ValidacaoBloco.builder()
                     .nomeValidador("Joao Vitor")
-                    .bloco(block)
+                    .bloco(bloco)
                     .assinaturaBloco(cipher.doFinal(hashByteArr))
                     .chavePublicaValidador(publicKey.toString().getBytes(StandardCharsets.UTF_8))
                     .build();

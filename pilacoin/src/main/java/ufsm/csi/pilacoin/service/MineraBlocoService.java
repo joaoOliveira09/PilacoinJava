@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import lombok.SneakyThrows;
+import ufsm.csi.pilacoin.Chaves;
 import ufsm.csi.pilacoin.model.Bloco;
 import ufsm.csi.pilacoin.model.PilaCoin;
 
@@ -35,7 +36,7 @@ private boolean primeiroBloco = false;
     public void minerar(int threads) {
 
         if(!primeiroBloco) {
-            this.requisisaoService.eviarRequisisao("pila-minerado", "");
+            this.requisisaoService.eviarRequisisao("bloco-minerado", "");
             this.primeiroBloco = true;
         }
         for(int i = 0; i < threads; i++) {
@@ -47,10 +48,12 @@ private boolean primeiroBloco = false;
     @SneakyThrows
     public void run() {
         // Gerar chave publica
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-        keyPairGenerator.initialize(1024);
-        publicKey = keyPairGenerator.generateKeyPair().getPublic();
-        privateKey = keyPairGenerator.generateKeyPair().getPrivate();
+        // KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+        // keyPairGenerator.initialize(1024);
+        Chaves chaves = new Chaves();
+        publicKey = chaves.getPublicKey();
+        privateKey = chaves.getPrivateKey();
+        
         BigInteger hash;
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         String json = "";
