@@ -22,4 +22,5 @@ public class RequisisaoService {
           String responseMessage = new String(message.getBody());
            System.out.println(responseMessage);
        }
+
 }

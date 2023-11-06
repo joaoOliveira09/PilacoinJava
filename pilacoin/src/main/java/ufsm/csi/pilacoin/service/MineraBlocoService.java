@@ -68,6 +68,9 @@ private boolean primeiroBloco = false;
             random.nextBytes(byteArray);
             ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
             bloco.setNonce(new BigInteger(md.digest(byteArray)).abs().toString());
+
+            String nonce = new BigInteger(byteArray).abs().toString();
+            bloco.setNonce(nonce);
             json = ow.writeValueAsString(bloco);
             hash = new BigInteger(md.digest(json.getBytes(StandardCharsets.UTF_8))).abs();
             vezes++;

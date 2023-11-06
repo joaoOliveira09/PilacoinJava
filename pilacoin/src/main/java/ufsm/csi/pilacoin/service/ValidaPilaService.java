@@ -67,7 +67,7 @@ public class ValidaPilaService {
                     Cipher cipher = Cipher.getInstance("RSA");
                     Chaves chaves = new Chaves();
                     publicKey = chaves.getPublicKey();
-                    privateKey = chaves.getPrivateKey();;
+                    privateKey = chaves.getPrivateKey();
 
                     cipher.init(Cipher.ENCRYPT_MODE, privateKey);
                     String hashStr = ob.writeValueAsString(hashh);

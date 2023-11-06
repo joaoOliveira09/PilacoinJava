@@ -11,14 +11,16 @@ import java.math.BigInteger;
 @Service
 public class DificuldadeService {
     private MineraPilaService mineraPilaService;
+    private MineraBlocoService mineraBlocoService;
     private boolean verificaTh = false;
     public static BigInteger dificuldadeAtual;
     private BigInteger novaDificuldade;
     private boolean verificaDif = true;
     public static final int numThreads = 4;
 
-    public DificuldadeService(MineraPilaService mineraPilaService) {
+    public DificuldadeService(MineraPilaService mineraPilaService, MineraBlocoService mineraBlocoService) {
        this.mineraPilaService = mineraPilaService;
+       this.mineraBlocoService = mineraBlocoService;
     }
     // Pega a dificuldade do Sor 
     @SneakyThrows
@@ -46,6 +48,7 @@ public class DificuldadeService {
         
         if(!verificaTh) {
              this.mineraPilaService.minerar(numThreads);
+            //this.mineraBlocoService.minerar(numThreads);
             this.verificaTh = true;
         }
     }

@@ -6,6 +6,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
+import java.io.*;
+import java.security.*;
 import lombok.Data;
 
 
@@ -13,11 +15,6 @@ import lombok.Data;
 public class Chaves {
     private PublicKey publicKey;
     private PrivateKey privateKey;
-
-    // KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-    //     keyPairGenerator.initialize(1024);
-    //     publicKey = keyPairGenerator.generateKeyPair().getPublic();
-    //     privateKey = keyPairGenerator.generateKeyPair().getPrivate();
 
         public Chaves() throws NoSuchAlgorithmException {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -27,5 +24,23 @@ public class Chaves {
         publicKey = keyPair.getPublic();
         privateKey = keyPair.getPrivate();
     }
+
+    //Futuramente Salvar essas chaves em um arquivo
+
+    //  public void salvaChavesArquivo(String publicKeyFile, String privateKeyFile) throws IOException {
+    //     try (ObjectOutputStream publicKeyStream = new ObjectOutputStream(new FileOutputStream(publicKeyFile));
+    //          ObjectOutputStream privateKeyStream = new ObjectOutputStream(new FileOutputStream(privateKeyFile))) {
+    //         publicKeyStream.writeObject(publicKey);
+    //         privateKeyStream.writeObject(privateKey);
+    //     }
+    // }
+
+    // public void getChavesArquivo(String publicKeyFile, String privateKeyFile) throws IOException, ClassNotFoundException {
+    //     try (ObjectInputStream publicKeyStream = new ObjectInputStream(new FileInputStream(publicKeyFile));
+    //          ObjectInputStream privateKeyStream = new ObjectInputStream(new FileInputStream(privateKeyFile))) {
+    //         publicKey = (PublicKey) publicKeyStream.readObject();
+    //         privateKey = (PrivateKey) privateKeyStream.readObject();
+    //     }
+    // }
     
 }
