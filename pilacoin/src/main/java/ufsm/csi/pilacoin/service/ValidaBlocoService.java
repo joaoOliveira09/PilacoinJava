@@ -48,12 +48,12 @@ public class ValidaBlocoService {
     @SneakyThrows
     @RabbitListener(queues = "descobre-bloco")
     public void descobreBloco(@Payload String blocoJson) throws JsonProcessingException, NoSuchAlgorithmException {
-        System.out.println("Descobriu um bloco!");
+        System.out.println("Achei um Bloco: ");
         System.out.println(blocoJson);
         ObjectMapper om = new ObjectMapper();
         Bloco bloco = om.readValue(blocoJson, Bloco.class);
         String nonceAnterior = (bloco.getNonce() != null)?bloco.getNonce():"nulo";
-        System.out.println("Nonce anterior: "+ nonceAnterior);
+        System.out.println("Nonce do bloco anterior: "+ nonceAnterior);
         BigInteger hash;
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         Chaves chaves = new Chaves();
@@ -82,7 +82,7 @@ public class ValidaBlocoService {
 
      @RabbitListener(queues = "bloco-minerado")
     public void validaBloco(@Payload String blockStr) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, JsonProcessingException, IllegalBlockSizeException, BadPaddingException {
-        System.out.println("/////////////".repeat(4));
+        System.out.println("===========".repeat(4));
         System.out.println("Validando bloco!");
         ObjectMapper om = new ObjectMapper();
         Bloco bloco;
@@ -114,7 +114,7 @@ public class ValidaBlocoService {
                     nomeValidador("Joao Vitor").build();
             try {
                 requisisaoService.eviarRequisisao("bloco-validado", om.writeValueAsString(vbj));
-                System.out.println("Valido! :)");
+                System.out.println("Bloco Valido");
             } catch (JsonProcessingException e) {
                 requisisaoService.eviarRequisisao("bloco-minerado", blockStr);
                 System.out.println("Erro conversão");
@@ -122,9 +122,9 @@ public class ValidaBlocoService {
             }
         } else {
             requisisaoService.eviarRequisisao("bloco-minerado", blockStr);
-            System.out.println("Não validou :(");
+            System.out.println("Bloco Invalido");
         }
-        System.out.println("//////////////".repeat(4));
+        System.out.println("===========".repeat(4));
     }
 
 
