@@ -1,4 +1,4 @@
-.moment{
+.carteira{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,7 +20,7 @@ img{
     margin-bottom: 0 auto 1em;
 }
 
-.about-moment, .actions{
+.about-carteira, .actions{
     border-bottom: 1px solid #CCC;
     padding: 1.2em;
     width: 100%;

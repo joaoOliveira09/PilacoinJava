@@ -43,16 +43,6 @@ public class MineraPilaService implements Runnable{
     @Override
     @SneakyThrows
     public void run() {
-        // Codigo responsável pela chaves publicas em arquivo
-        // Chaves chaves = new Chaves();
-        //     chaves.salvaChavesArquivo("publicKey.dat", "privateKey.dat");
-
-        //     Chaves loadedChaves = new Chaves();
-        //     loadedChaves.getChavesArquivo("publicKey.dat", "privateKey.dat");
-        //     publicKey = loadedChaves.getPublicKey();
-        // privateKey = loadedChaves.getPrivateKey();
-
-
         Chaves chaves = new Chaves();
         publicKey = chaves.getPublicKey();
         privateKey = chaves.getPrivateKey();
