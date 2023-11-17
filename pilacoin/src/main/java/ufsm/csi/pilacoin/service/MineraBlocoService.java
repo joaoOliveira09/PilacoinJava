@@ -2,11 +2,9 @@ package ufsm.csi.pilacoin.service;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.util.Date;
 import java.util.Random;
 
 import org.springframework.stereotype.Service;
@@ -15,16 +13,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import lombok.SneakyThrows;
-import ufsm.csi.pilacoin.Chaves;
+import ufsm.csi.pilacoin.utils.Chaves;
 import ufsm.csi.pilacoin.model.Bloco;
-import ufsm.csi.pilacoin.model.PilaCoin;
 
 @Service
 public class MineraBlocoService implements Runnable {
 
 private boolean primeiroBloco = false;
     private final RequisisaoService requisisaoService;
-    
+
     public static BigInteger blocoMinerado;
     public static PublicKey publicKey;
     public static PrivateKey privateKey;
@@ -53,7 +50,7 @@ private boolean primeiroBloco = false;
         Chaves chaves = new Chaves();
         publicKey = chaves.getPublicKey();
         privateKey = chaves.getPrivateKey();
-        
+
         BigInteger hash;
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         String json = "";
@@ -86,6 +83,6 @@ private boolean primeiroBloco = false;
             }
         }
     }
-    
-    
+
+
 }

@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonPropertyOrder(alphabetic = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-
 public class ValidacaoPila {
+    private Long id;
     private String nomeValidador;
     private byte[] chavePublicaValidador;
     private byte[] assinaturaPilaCoin;
     private PilaCoin pilaCoin;
-    
+
 }

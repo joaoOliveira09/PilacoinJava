@@ -1,4 +1,4 @@
-package ufsm.csi.pilacoin;
+package ufsm.csi.pilacoin.utils;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;

@@ -23,7 +23,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import lombok.SneakyThrows;
-import ufsm.csi.pilacoin.Chaves;
+import ufsm.csi.pilacoin.model.PilaCoin;
+import ufsm.csi.pilacoin.utils.Chaves;
 import ufsm.csi.pilacoin.model.Bloco;
 import ufsm.csi.pilacoin.model.ValidacaoBloco;
 
@@ -60,6 +61,7 @@ public class ValidaBlocoService {
                     publicKey = chaves.getPublicKey();
                     privateKey = chaves.getPrivateKey();
         bloco.setChaveUsuarioMinerador(publicKey.toString().getBytes());
+        bloco.setNomeUsuarioMinerador("Joao Vitor Oliveira");
         boolean loop = true;
         while(loop){
             Random rnd = new Random();
@@ -85,7 +87,7 @@ public class ValidaBlocoService {
         System.out.println("===========".repeat(4));
         System.out.println("Validando bloco!");
         ObjectMapper om = new ObjectMapper();
-        Bloco bloco;
+        Bloco bloco = om.readValue(blockStr, Bloco.class);
         try {
             bloco = om.readValue(blockStr, Bloco.class);
         } catch (JsonProcessingException e) {
@@ -110,10 +112,11 @@ public class ValidaBlocoService {
 
             ValidacaoBloco vbj = ValidacaoBloco.builder().
                     assinaturaBloco(cipher.doFinal(assinatura)).
-                    chavePublicaValidador(publicKey.toString().getBytes(StandardCharsets.UTF_8)).
-                    nomeValidador("Joao Vitor").build();
+                    chavePublicaValidador(publicKey.toString().getBytes(StandardCharsets.UTF_8)).bloco(bloco).
+            nomeValidador("Joao Vitor").build();
             try {
                 requisisaoService.eviarRequisisao("bloco-validado", om.writeValueAsString(vbj));
+                System.out.println(blockStr);
                 System.out.println("Bloco Valido");
             } catch (JsonProcessingException e) {
                 requisisaoService.eviarRequisisao("bloco-minerado", blockStr);
@@ -122,11 +125,12 @@ public class ValidaBlocoService {
             }
         } else {
             requisisaoService.eviarRequisisao("bloco-minerado", blockStr);
+            System.out.println("demonio:"+blockStr);
             System.out.println("Bloco Invalido");
         }
         System.out.println("===========".repeat(4));
     }
 
 
-    
+
 }

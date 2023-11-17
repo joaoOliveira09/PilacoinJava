@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
-import ufsm.csi.pilacoin.Chaves;
+import ufsm.csi.pilacoin.utils.Chaves;
 import ufsm.csi.pilacoin.model.PilaCoin;
 
 import java.math.BigInteger;
@@ -20,13 +20,15 @@ import java.util.Random;
 public class MineraPilaService implements Runnable{
     private boolean primeiroPila = false;
     private final RequisisaoService requisisaoService;
+    private final PilacoinService pilacoinService;
     
     public static BigInteger pilaMinerado;
     public static PublicKey publicKey;
     public static PrivateKey privateKey;
 
-    public MineraPilaService(RequisisaoService requisisaoService) {
+    public MineraPilaService(RequisisaoService requisisaoService, PilacoinService pilacoinService) {
         this.requisisaoService = requisisaoService;
+        this.pilacoinService = pilacoinService;
     }
 
     public void minerar(int threads) {
@@ -36,7 +38,7 @@ public class MineraPilaService implements Runnable{
             this.primeiroPila = true;
         }
         for(int i = 0; i < threads; i++) {
-            new Thread(new MineraPilaService(requisisaoService)).start();
+            new Thread(new MineraPilaService(requisisaoService, pilacoinService)).start();
         }
     }
 
@@ -55,7 +57,7 @@ public class MineraPilaService implements Runnable{
         PilaCoin pilaCoin = PilaCoin.builder()
                 .dataCriacao(new Date(System.currentTimeMillis()))
                 .chaveCriador(publicKey.toString().getBytes(StandardCharsets.UTF_8))
-                .nomeCriador("joao vitor")
+                .nomeCriador("Joao Vitor Oliveira")
                 .build();
         int vezes = 0;
 
@@ -78,6 +80,7 @@ public class MineraPilaService implements Runnable{
                 System.out.println("=======SUCESSO==========");
                 System.out.println( "Minerei " + vezes + " vezes e encontrei 1 Pila");
                 System.out.println(json);
+                pilacoinService.savePila(pilaCoin);
 
                 vezes = 0;
             }

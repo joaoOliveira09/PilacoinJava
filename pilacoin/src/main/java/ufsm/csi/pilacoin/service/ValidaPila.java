@@ -56,9 +56,9 @@ public class ValidaPila {
                 MessageDigest md = MessageDigest.getInstance("SHA-256");
                 BigInteger hash = new BigInteger(md.digest(pilaStr.getBytes(StandardCharsets.UTF_8))).abs();
                 //System.out.println("Gerou o hash");
-                 while(DificuldadeService.dificuldadeAtual == null){}//garatnir q n vai tentar comparar antes de receber a dificuldade
-                 if(hash.compareTo(DificuldadeService.dificuldadeAtual) < 0){
-                     System.out.println("Validando pila do(a): "+pilacoin.getNomeCriador());
+                while(DificuldadeService.dificuldadeAtual == null){}//garatnir q n vai tentar comparar antes de receber a dificuldade
+                if(hash.compareTo(DificuldadeService.dificuldadeAtual) < 0){
+                    System.out.println("Validando pila do(a): "+pilacoin.getNomeCriador());
                     md.reset();//reseta o MessageDigest para usar dnv
                     byte[] hashh = md.digest(pilaStr.getBytes(StandardCharsets.UTF_8));
                     Cipher cipher = Cipher.getInstance("RSA");
@@ -72,7 +72,7 @@ public class ValidaPila {
                             chavePublicaValidador(MineraPilaService.publicKey.toString().getBytes(StandardCharsets.UTF_8)).build();
                     rabbitTemplate.convertAndSend("pila-validado", ob.writeValueAsString(validacaoPila));
                     String jsonValidado = ob.writeValueAsString(validacaoPila);
-                     System.out.println("Minha Assinatura: "+jsonValidado);
+                    System.out.println("Minha Assinatura: "+jsonValidado);
                     System.out.println("Valido!");
                 } else {
                     //System.out.println("Não Validou!");
@@ -81,5 +81,5 @@ public class ValidaPila {
             }
         }
     }
-    
+
 }
