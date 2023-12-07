@@ -1,0 +1,28 @@
+<div class="home-container">
+  <h1>Veja os pilacoins:</h1>
+  <br>
+  <h2 class="">Pilas minerados: {{pilas.length}}</h2>
+  <div class="search-container">
+     <form >
+         <!-- <fa-icon [icon]="faSearch"></fa-icon> -->
+         <input type="text" placeholder="Ou busque por um pila"
+         (input)="search($event)">
+     </form>
+  </div>
+ <div>
+    <div *ngIf="pilas && pilas.length > 0; else noPilas">
+     <div class="card-container">
+         <div class="card" *ngFor="let pila of pilas.slice(0,18)">
+            <!-- <h3>ID: {{pila.id}}</h3> -->
+             <h3>Pila: {{pila.nonce | slice:0:10}}...</h3>
+             <h3>Criador:</h3>
+             <h3>{{pila.nomeCriador}}</h3>
+             <h3>Status: {{pila.status}}</h3>
+             <input type="submit" routerLink="transferencia/{{pila.id}}" value="Tranferir">
+          </div>
+     </div>
+ </div>
+  <ng-template #noPilas>
+     <h1>Não há pilas</h1>
+  </ng-template>
+ </div>

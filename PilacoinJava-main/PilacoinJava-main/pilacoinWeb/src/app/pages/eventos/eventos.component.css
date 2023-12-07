@@ -1,0 +1,22 @@
+/* Adicione este estilo ao seu arquivo de estilo CSS ou ao estilo do componente Angular */
+
+div {
+    margin-bottom: 10px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: black;
+  }
+  
+  textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+  }
+  

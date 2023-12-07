@@ -1,0 +1,11 @@
+<form (ngSubmit)="Submit()" [formGroup]="tranferenciaForm">
+  <div class="form-group">
+    <label for="user">Usuário:</label>
+    <select formControlName="user" *ngIf="usuarios" (change)="onSelectChange($event)">
+      <option value="" selected disabled>Selecione um Usuário</option>
+      <option *ngFor="let usuario of usuarios" [value]="usuario.id">{{usuario.nome}}</option>
+    </select>
+    <br>
+    <input type="submit" value="Transferir">
+  </div>
+</form>
